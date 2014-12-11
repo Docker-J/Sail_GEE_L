@@ -1986,8 +1986,6 @@ static enum power_supply_property msm_batt_power_props[] = {
 	POWER_SUPPLY_PROP_CURRENT_NOW,
 	POWER_SUPPLY_PROP_TEMP,
 	POWER_SUPPLY_PROP_ENERGY_FULL,
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_LGE_PM
 	POWER_SUPPLY_PROP_PSEUDO_BATT,
 	POWER_SUPPLY_PROP_BLOCK_CHARGING,
@@ -2005,7 +2003,6 @@ static enum power_supply_property msm_batt_power_props[] = {
 #ifdef CONFIG_LGE_PM_BATTERY_ID_CHECKER
 	POWER_SUPPLY_PROP_BATTERY_ID_CHECK,
 #endif
->>>>>>> c14fae7... power: Power fixes based on Gproj
 };
 
 #ifdef CONFIG_BATTERY_MAX17043
@@ -2378,20 +2375,6 @@ static int get_prop_batt_status(struct pm8921_chg_chip *chip)
 			batt_state = POWER_SUPPLY_STATUS_NOT_CHARGING;
 #endif
 	}
-<<<<<<< HEAD
-
-	if (chip->eoc_check_soc) {
-		if (get_prop_batt_capacity(chip) == 100) {
-			if (batt_state == POWER_SUPPLY_STATUS_CHARGING)
-				batt_state = POWER_SUPPLY_STATUS_FULL;
-		} else {
-			if (batt_state == POWER_SUPPLY_STATUS_FULL)
-				batt_state = POWER_SUPPLY_STATUS_CHARGING;
-		}
-	}
-
-	pr_debug("batt_state = %d fsm_state = %d \n",batt_state, fsm_state);
-=======
 	
 #if defined(CONFIG_MACH_APQ8064_GK_KR) || defined(CONFIG_MACH_APQ8064_GV_KR)
 #ifdef CONFIG_LGE_CHARGER_TEMP_SCENARIO
@@ -2404,7 +2387,6 @@ static int get_prop_batt_status(struct pm8921_chg_chip *chip)
 		}
 #endif
 #endif	
->>>>>>> c14fae7... power: Power fixes based on Gproj
 	return batt_state;
 }
 
@@ -2489,14 +2471,14 @@ static int pm_batt_power_get_property(struct power_supply *psy,
 		if(lge_get_board_revno() > HW_REV_A)
 			val->intval = max17047_get_batt_vol();
 		else
-			val->intval = get_prop_battery_uvolts(chip) / 1000;
+			val->intval = get_prop_battery_uvolts(chip);
 #else
 		val->intval = max17047_get_batt_vol();
 #endif
 #elif defined (CONFIG_BATTERY_MAX17043)
 		val->intval = max17043_get_voltage(chip);
 #else
-		val->intval = get_prop_battery_uvolts(chip) / 1000;
+		val->intval = get_prop_battery_uvolts(chip);
 #endif
 		break;
 	case POWER_SUPPLY_PROP_CAPACITY:
@@ -2534,8 +2516,6 @@ static int pm_batt_power_get_property(struct power_supply *psy,
 	case POWER_SUPPLY_PROP_ENERGY_FULL:
 		val->intval = get_prop_batt_fcc(chip) * 1000;
 		break;
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_LGE_PM
 	case POWER_SUPPLY_PROP_PSEUDO_BATT:
 		val->intval = pseudo_batt_info.mode;
@@ -2569,7 +2549,6 @@ static int pm_batt_power_get_property(struct power_supply *psy,
 		val->intval = is_battery_valid(chip);
 		break;
 #endif
->>>>>>> c14fae7... power: Power fixes based on Gproj
 	default:
 		return -EINVAL;
 	}
@@ -5037,15 +5016,6 @@ static void eoc_worker(struct work_struct *work)
 		count = 0;
 	}
 
-<<<<<<< HEAD
-	if (chip->eoc_check_soc) {
-		percent_soc = get_prop_batt_capacity(chip);
-		if (percent_soc == 100)
-			count = CONSECUTIVE_COUNT;
-	}
-
-=======
->>>>>>> c14fae7... power: Power fixes based on Gproj
 	if (count == CONSECUTIVE_COUNT) {
 		count = 0;
 		pr_info("End of Charging\n");
